@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: mymegh-money-backend
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        fromDatabase:
+          name: mymegh-money-db
+          property: connectionString
+      - key: FRONTEND_URL
+        value: https://mymegh-money.vercel.app
