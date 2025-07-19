@@ -8,7 +8,7 @@ import type {
   InsertPayment,
   PersonWithBalance,
   ExpenseWithPerson
-} from "@shared/schema";
+} from "../shared/schema";
 
 const MONGODB_URI = "mongodb+srv://meghanshagarwal3110:meghansh3110@booster.moyfe3g.mongodb.net/?retryWrites=true&w=majority&appName=Booster";
 const DB_NAME = "splittracker";
