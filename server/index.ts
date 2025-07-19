@@ -9,8 +9,9 @@ const app = express();
 const PORT = process.env.PORT || 10000;
 
 // Middleware
+const frontendUrl = (process.env.FRONTEND_URL || 'https://mymegh-money-frontend.vercel.app').replace(/\/$/, '');
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'https://mymegh-money-frontend.vercel.app',
+  origin: frontendUrl,
   credentials: true
 }));
 app.use(express.json());
@@ -29,6 +30,6 @@ const { registerRoutes } = await import('./routes.js');
   server.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Server running on port ${PORT}`);
     console.log(`Environment: ${process.env.NODE_ENV}`);
-    console.log(`CORS enabled for: ${process.env.FRONTEND_URL || 'https://mymegh-money-frontend.vercel.app'}`);
+    console.log(`CORS enabled for: ${frontendUrl}`);
   });
 })();
