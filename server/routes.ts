@@ -12,6 +12,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(people);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch people" });
+        }
+  });
+  // Get specific person
+  app.get("/api/people/:id", async (req, res) => {
+    try {
+      const id = req.params.id;
+      const people = await storage.getPeople();
+      const person = people.find(p => p.id === id);
+      if (!person) {
+        res.status(404).json({ message: "Person not found" });
+        return;
+      }
+      res.json(person);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch person" });
+    }
+  });
+  // Get expenses for a specific person
+  app.get("/api/people/:id/expenses", async (req, res) => {
+    try {
+      const personId = req.params.id;
+      const expenses = await storage.getExpenses();
+      const people = await storage.getPeople();
+      
+      // Filter expenses for this person
+      const personExpenses = expenses.filter(expense => expense.paidForPersonId === personId);
+      
+      // Add person details to each expense
+      const expensesWithPerson = personExpenses.map(expense => {
+        const person = people.find(p => p.id === expense.paidForPersonId);
+        return {
+          ...expense,
+          person: person || null
+        };
+      });
+      res.json(expensesWithPerson);
+    } catch (error) {
+      console.error("Error fetching person expenses:", error);
+      res.status(500).json({ message: "Failed to fetch person expenses" });
     }
   });
 
